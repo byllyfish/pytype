@@ -320,5 +320,11 @@ class StdlibTestsFeatures(test_base.TargetPython3FeatureTest,
       f(Foo.foo)
     """)
 
+  def test_asyncio(self):
+    # Test that asyncio can be imported under Python 3.7.
+    self.Check("""
+      import asyncio
+    """)
+
 
 test_base.main(globals(), __name__ == "__main__")

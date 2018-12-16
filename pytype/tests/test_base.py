@@ -32,6 +32,10 @@ CAPTURE_STDOUT = ("-s" not in sys.argv)
 skip = unittest.skip
 
 
+# Test Python 3.7 if possible.
+_PY3_VERSION = (3, 7) if sys.version_info[:2] == (3, 7) else (3, 6)
+
+
 # Pytype offers a Python 2.7 interpreter with type annotations backported as a
 # __future__ import (see pytype/patches/python_2_7_type_annotations.diff).
 _ANNOTATIONS_IMPORT = "from __future__ import google_type_annotations"
@@ -502,7 +506,7 @@ class TargetPython3BasicTest(BaseTest):
 
   def __init__(self, *args, **kwargs):
     super(TargetPython3BasicTest, self).__init__(*args, **kwargs)
-    self.python_version = (3, 6)
+    self.python_version = _PY3_VERSION
 
 
 class TargetPython3FeatureTest(TargetPython3BasicTest):
@@ -578,7 +582,7 @@ def main(toplevels, is_main_module=True):
           setattr(tp, "%s_py2" % attr_name,
                   _ReplacementMethod((2, 7), attr))
           setattr(tp, "%s_py3" % attr_name,
-                  _ReplacementMethod((3, 6), attr))
+                  _ReplacementMethod(_PY3_VERSION, attr))
           delattr(tp, attr_name)
   if is_main_module:
     unittest.main()
